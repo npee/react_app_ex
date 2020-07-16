@@ -1,18 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function tick() {
+const Clock = () => {
 
-    const element = <div>
-        <h1>Hello, world!</h1>
-        <h2>It is {new Date().toLocaleTimeString()}</h2>
-    </div>;
+    const [date, setDate] = useState(new Date());
 
-    ReactDOM.render(
-        element,
-        document.getElementById('root')
+    const tick = () => setDate(() => new Date());
+
+    useEffect(() => {
+        const timerID = setInterval(() => tick(), 1000);
+        return () => clearInterval(timerID);
+    }, []);
+
+    return (
+        <div>
+            <h1>Hello, world!</h1>
+            <h2>It is {date.toLocaleTimeString()}</h2>
+        </div>
     );
 }
 
-setInterval(tick, 1000);
+ReactDOM.render(
+    <Clock />,
+    document.getElementById('root')
+);
